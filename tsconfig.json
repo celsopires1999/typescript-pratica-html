@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "target": "ES5",
+        "module": "amd",
+        "rootDir": "src",
+        "outDir": "public/js",
+        "sourceMap": true,
+        "inlineSources": true
+    },
+    "files": [
+        "src/test.ts"
+    ]
+}
