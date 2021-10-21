@@ -2,13 +2,13 @@ define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Table {
-        constructor(selector, data, columns) {
+        constructor(selector, columns, _data) {
             this.selector = selector;
-            this.data = data;
             this.columns = columns;
+            this._data = _data;
         }
         createRows() {
-            for (let row of this.data) {
+            for (let row of this._data) {
                 const tr = document.createElement('tr');
                 for (let column of this.columns) {
                     this.createColumn(tr, row[column]);
@@ -26,6 +26,9 @@ define(["require", "exports"], function (require, exports) {
         }
         make() {
             this.createRows();
+        }
+        set data(value) {
+            this._data = value;
         }
     }
     exports.default = Table;

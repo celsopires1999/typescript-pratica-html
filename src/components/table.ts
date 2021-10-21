@@ -1,10 +1,10 @@
 export default abstract class Table {
-    constructor(private selector, private data: Array<any>, private columns: Array<string>) {
+    constructor(private selector, private columns: Array<string>, private _data?: Array<any>) {
 
     }
 
     protected createRows() {
-        for (let row of this.data) {
+        for (let row of this._data) {
             const tr = document.createElement('tr')
             for (let column of this.columns) {
                 this.createColumn(tr, row[column])
@@ -25,5 +25,9 @@ export default abstract class Table {
 
     public make() {
         this.createRows()
+    }
+
+    set data(value) {
+        this._data = value
     }
 }

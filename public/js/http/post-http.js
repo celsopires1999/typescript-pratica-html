@@ -1,27 +1,22 @@
-define(["require", "exports", "./http", ".././components/post-table"], function (require, exports, http_1, post_table_1) {
+define(["require", "exports", "./http"], function (require, exports, http_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class PostHttp {
         constructor() {
+            this.url = 'https://jsonplaceholder.typicode.com/posts';
             this.http = new http_1.default();
         }
         query() {
-            this.http.get('https://jsonplaceholder.typicode.com/posts')
+            return this.http.get(this.url)
                 .then(function (response) {
-                // console.log(JSON.parse(response.body))
-                new post_table_1.default('#my-table>tbody', JSON.parse(response.body), ['title', 'body']).make();
+                return JSON.parse(response.body);
             });
         }
-        save() {
-            const xhttp = new XMLHttpRequest();
-            xhttp.open('GET', 'https://jsonplaceholder.typicode.com/posts', true);
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    // aquiaqui deu certo
-                }
-                // aquiaqui deu errado
-            };
-            xhttp.send();
+        save(data) {
+            return this.http.post(this.url, data)
+                .then(function (response) {
+                return JSON.parse(response.body);
+            });
         }
     }
     exports.default = PostHttp;

@@ -1,34 +1,30 @@
 import Http from "./http"
 import Response from './response'
-import PostTable from '.././components/post-table'
 
 interface Callable {
     (posts: Array<any>)
 }
 
 export default class PostHttp {
+    
     private http: Http
+    private url = 'https://jsonplaceholder.typicode.com/posts'
+
     constructor() {
         this.http = new Http()
     }
 
-    query() {
-        this.http.get('https://jsonplaceholder.typicode.com/posts')
-            .then(function(response: Response){
-                // console.log(JSON.parse(response.body))
-                new PostTable('#my-table>tbody', JSON.parse(response.body), ['title', 'body']).make()
+    query(): Promise<Array<any>> {
+        return this.http.get(this.url)
+            .then(function(response: Response) {
+                return JSON.parse(response.body)
             })
     }
 
-    save() {
-        const xhttp = new XMLHttpRequest()
-        xhttp.open('GET', 'https://jsonplaceholder.typicode.com/posts', true)
-        xhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                // aquiaqui deu certo
-            }
-            // aquiaqui deu errado
-        }
-        xhttp.send()
+    save(data: { title: string, body: string }): Promise<Array<object>> {
+        return this.http.post(this.url, data)
+        .then(function(response: Response) {
+            return JSON.parse(response.body)
+        })
     }
 }

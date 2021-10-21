@@ -14,6 +14,14 @@ export default class Http {
         })
     }
 
+    post (url: string, data: object): Promise<Response> {
+        return new Promise((resolve, reject) => {
+            const xhttp = this.createXhttp(HttpVerbs.POST, url)
+            this.configureCallbacks(xhttp, resolve, reject)
+            xhttp.send(JSON.stringify(data))
+        })
+    }
+
     private createXhttp(verb: HttpVerbs, url: string) {
         const xhttp = new XMLHttpRequest();
         xhttp.open(verb, url, true);
@@ -24,11 +32,14 @@ export default class Http {
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4) {
                 const response = new Response(this.responseText, this.status)
-                if (this.status == 200) {
+                if (this.status.toString().startsWith('20')) {
                     resolve(response)
+                } else {
+                    if (this.status.toString().startsWith('40') || this.status.toString().startsWith('50')) {
+                        reject(response)
+                    }
                 }
             }
-            // reject(this.responseText) //erro
         }
     }
 }

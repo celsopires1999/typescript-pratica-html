@@ -14,6 +14,13 @@ define(["require", "exports", "./response"], function (require, exports, respons
                 xhttp.send();
             });
         }
+        post(url, data) {
+            return new Promise((resolve, reject) => {
+                const xhttp = this.createXhttp(HttpVerbs.POST, url);
+                this.configureCallbacks(xhttp, resolve, reject);
+                xhttp.send(JSON.stringify(data));
+            });
+        }
         createXhttp(verb, url) {
             const xhttp = new XMLHttpRequest();
             xhttp.open(verb, url, true);
@@ -23,11 +30,15 @@ define(["require", "exports", "./response"], function (require, exports, respons
             xhttp.onreadystatechange = function () {
                 if (this.readyState == 4) {
                     const response = new response_1.default(this.responseText, this.status);
-                    if (this.status == 200) {
+                    if (this.status.toString().startsWith('20')) {
                         resolve(response);
                     }
+                    else {
+                        if (this.status.toString().startsWith('40') || this.status.toString().startsWith('50')) {
+                            reject(response);
+                        }
+                    }
                 }
-                // reject(this.responseText) //erro
             };
         }
     }

@@ -1,11 +1,13 @@
 requirejs.config({
     baseUrl: "/js",
     paths: {
-        "test": "test",
-        "module1": "module1"
+        // "test": "test",
+        "page/post-list-page": "page/post-list-page",
+        "page/post-new-page": "page/post-new-page"
+        // "module1": "module1"
     }
 });
 
-requirejs(['test'], function(){
+requirejs([MODULE_INITIALIZER], function(){
 
 });
